@@ -107,4 +107,8 @@ Rails.application.configure do
     Bullet.rails_logger = true
     Bullet.add_footer = true
   end
+
+  config.after_initialize do
+    Prosopite.rails_logger = true
+  end
 end

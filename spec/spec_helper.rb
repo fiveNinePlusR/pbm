@@ -10,6 +10,7 @@ require 'simplecov'
 require 'simplecov-cobertura'
 require 'rspec/retry'
 require 'selenium/webdriver'
+require 'paper_trail/frameworks/rspec'
 
 include Sprockets::Rails::Helper
 include ActiveSupport::Testing::TimeHelpers
@@ -121,6 +122,14 @@ RSpec.configure do |config|
       }
       ]
     )
+  end
+
+  config.before(:each) do
+    Prosopite.scan
+  end
+
+  config.after(:each) do
+    Prosopite.finish
   end
 
   config.before(js: true) do
