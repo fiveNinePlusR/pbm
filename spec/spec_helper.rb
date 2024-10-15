@@ -124,12 +124,14 @@ RSpec.configure do |config|
     )
   end
 
-  config.before(:each) do
-    Prosopite.scan
-  end
+  if ENV.fetch('RUN_PROSOPHITE', false)
+    config.before(:each) do
+      Prosopite.scan
+    end
 
-  config.after(:each) do
-    Prosopite.finish
+    config.after(:each) do
+      Prosopite.finish
+    end
   end
 
   config.before(js: true) do

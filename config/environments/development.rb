@@ -108,7 +108,12 @@ Rails.application.configure do
     Bullet.add_footer = true
   end
 
-  config.after_initialize do
-    Prosopite.rails_logger = true
+  # default to running prosopite in development unless overriden
+  ENV['RUN_PROSOPITE'] = ENV.fetch('RUN_PROSOPITE', true)
+
+  if ENV['RUN_PROSOPITE']
+    config.after_initialize do
+      Prosopite.rails_logger = true
+    end
   end
 end
