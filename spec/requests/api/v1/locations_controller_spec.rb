@@ -376,8 +376,6 @@ describe Api::V1::LocationsController, type: :request do
 
       get '/api/v1/locations/closest_by_address.json', params: { address: '97202' }
 
-      sleep 1
-
       parsed_body = JSON.parse(response.body)
       expect(parsed_body.size).to eq(1)
 
@@ -468,8 +466,6 @@ describe Api::V1::LocationsController, type: :request do
       FactoryBot.create(:location_machine_xref, location: closest_location, machine: FactoryBot.create(:machine, name: 'Sass', manufacturer: 'Williams'))
 
       get '/api/v1/locations/closest_by_address.json', params: { address: '97202', manufacturer: 'Stern', send_all_within_distance: 1 }
-
-      sleep 1
 
       parsed_body = JSON.parse(response.body)
       locations = parsed_body['locations']

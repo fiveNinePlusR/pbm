@@ -25,11 +25,7 @@ describe LocationPictureXrefsController, type: :controller do
     it 'Should not allow you to add pictures if you are not logged in' do
       @location.reload
 
-      sleep 0.5
-
       visit '/portland/?by_location_id=' + @location.id.to_s
-
-      sleep 0.5
 
       expect(page).to_not have_selector("#add_picture_location_banner_#{@location.reload.id}")
     end

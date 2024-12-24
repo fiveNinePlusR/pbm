@@ -16,14 +16,12 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
     it 'it should show the correctly cached page' do
       # cache the logged out page
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
-      sleep 0.5
 
       Capybara.using_session(:logged_in) do
         # login and add a machine condition and expect the server to save it
         login(@user)
 
         visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user.username}"
-        sleep 0.5
 
         # enter a new condition
         page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
@@ -36,7 +34,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
 
       # visit with the logged out session and expect to see the logged in version
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
-      sleep 0.5
 
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       expect(page).to have_content('This is a new condition1')
@@ -48,7 +45,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         login(@user2)
 
         visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user2.username}"
-        sleep 0.5
 
         page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
         expect(page).to have_content('Add machine comment')
@@ -63,7 +59,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
 
       # visit with the logged out session and expect to see the logged new content
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
-      sleep 0.5
 
       page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
       expect(page).to have_content('This is a new condition1')
@@ -75,7 +70,6 @@ RSpec.feature 'LocationMachineConditionsCaches', type: :feature do
         # Visit the page again as the first logged in user and expect the new content
         expect(page).not_to have_content('This is a new condition2')
         visit "/#{@region.name}/?by_location_id=#{@location.id}&initials=#{@user.username}"
-        sleep 0.5
 
         page.find("div#machine_tools_lmx_banner_#{@lmx.id}").click
         expect(page).to have_content('This is a new condition1')

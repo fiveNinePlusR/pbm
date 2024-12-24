@@ -13,8 +13,6 @@ describe MachineScoreXrefsController do
 
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
-      sleep 1
-
       expect(page).to_not have_selector("div#add_scores_lmx_banner_#{lmx.id}")
     end
   end
@@ -35,8 +33,6 @@ describe MachineScoreXrefsController do
       fill_in('score', with: 1234)
       click_on('Add Score')
 
-      sleep(1)
-
       expect(lmx.machine_score_xrefs.first.score).to eq(1234)
       expect(lmx.machine_score_xrefs.first.username).to eq('cap')
     end
@@ -51,8 +47,6 @@ describe MachineScoreXrefsController do
       fill_in('score', with: '1,234')
       click_on('Add Score')
 
-      sleep(1)
-
       expect(lmx.machine_score_xrefs.first.score).to eq(1234)
       expect(lmx.machine_score_xrefs.first.username).to eq('cap')
     end
@@ -66,8 +60,6 @@ describe MachineScoreXrefsController do
       page.find("div#add_scores_lmx_banner_#{lmx.id}").click
       fill_in('score', with: 'fword')
       click_on('Add Score')
-
-      sleep(1)
 
       expect(lmx.machine_score_xrefs.size).to eq(0)
     end
@@ -121,13 +113,9 @@ describe MachineScoreXrefsController do
       fill_in('score', with: 1234)
       click_on('Add Score')
 
-      sleep(1)
-
       expect(page).to have_css("div#show_scores_lmx_#{lmx.id}")
 
       page.find("div#show_scores_lmx_#{lmx.id}").click
-
-      sleep(1)
 
       expect(URI.parse(page.find_link('cap')['href']).to_s).to match(%r{/users/#{@user.username}/profile})
     end

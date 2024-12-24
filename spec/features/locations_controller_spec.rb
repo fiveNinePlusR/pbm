@@ -29,14 +29,10 @@ describe LocationsController do
 
       find("#fave_location_img_#{location.id}").click
 
-      sleep 1
-
       expect(UserFaveLocation.where(location: location, user: user).size).to eq(1)
       expect(page.find("#fave_location_img_#{location.id}")['src']).to have_content('heart-filled')
 
       find("#fave_location_img_#{location.id}").click
-
-      sleep 1
 
       expect(UserFaveLocation.where(location: location, user: user).size).to eq(0)
       expect(page.find("#fave_location_img_#{location.id}")['src']).to have_content('heart-empty')
@@ -55,12 +51,9 @@ describe LocationsController do
 
         visit "/#{region ? region.name : 'map'}/?by_location_id=" + location.id.to_s
 
-        sleep 1
         page.accept_alert 'Thanks for confirming this line-up!' do
           find("#confirm_location_button_#{location.id}.confirm_button").click
         end
-
-        sleep 1
 
         expect(location.reload.date_last_updated).to eq(Date.today)
         expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')} by ssw")
@@ -118,11 +111,7 @@ describe LocationsController do
 
       @location.reload
 
-      sleep 1
-
       visit '/portland/?by_location_id=' + @location.id.to_s
-
-      sleep 1
 
       expect(page).to_not have_selector("input#remove_machine_#{LocationMachineXref.where(location_id: @location.id, machine_id: @machine.id).first.id}")
     end
@@ -150,8 +139,6 @@ describe LocationsController do
           click_button 'Remove'
         end
 
-        sleep 1
-
         expect(LocationMachineXref.all).to eq([])
         expect(location.reload.date_last_updated).to eq(Date.today)
         expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')}")
@@ -174,8 +161,6 @@ describe LocationsController do
       page.dismiss_confirm do
         click_button 'Remove'
       end
-
-      sleep 1
 
       expect(LocationMachineXref.all).to eq([lmx])
     end
@@ -213,8 +198,6 @@ describe LocationsController do
         fill_in('by_location_name', with: 'Zelda')
         click_on 'location_search_button'
 
-        sleep 1
-
         desc_tag = "meta[name=\"description\"][content=\"#{single_location_description}\"]"
         og_desc_tag = "meta[property=\"og:description\"][content=\"#{single_location_description}\"]"
         og_title_tag = "meta[property=\"og:title\"][content=\"#{single_location_title}\"]"
@@ -225,8 +208,6 @@ describe LocationsController do
 
         fill_in('by_location_name', with: '')
         click_on 'location_search_button'
-
-        sleep 1
 
         desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
         og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"
@@ -499,15 +480,11 @@ describe LocationsController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/portland\?region=portland$/)
 
       visit '/map'
 
       click_on 'location_search_button'
-
-      sleep 1
 
       expect(URI.parse(page.find_link('Link to this Search Result', match: :first)['href']).to_s).to match(/map\?$/)
     end
@@ -518,14 +495,10 @@ describe LocationsController do
 
       visit "/map?by_machine_id=#{@machine.id}"
 
-      sleep 1
-
       expect(find('#search_results')).to have_content('Regionless place')
       expect(find('#search_results')).to have_content('Cleo')
 
       visit "/portland?region=portland&by_machine_id=#{@machine.id}"
-
-      sleep 1
 
       expect(find('#search_results')).to_not have_content('Regionless place')
       expect(find('#search_results')).to have_content('Cleo')
@@ -533,8 +506,6 @@ describe LocationsController do
 
     it 'respects a region param -- does not start a search just based on presense of region' do
       visit '/portland'
-
-      sleep 1
 
       expect(page).not_to have_selector('#search_results')
     end
@@ -552,7 +523,6 @@ describe LocationsController do
       visit '/map/?by_location_id=' + @location.id.to_s
 
       find("#former_machines_location_banner_#{@location.id}").click
-      sleep(0.5)
 
       expect(find('.former_machines_location')).to have_content('Sassy Madness')
       expect(find('.former_machines_location')).to_not have_content('Pizza Attack')
@@ -575,7 +545,6 @@ describe LocationsController do
       visit '/map/?by_location_id=' + @location.id.to_s
 
       find("#recent_location_activity_location_banner_#{@location.id}").click
-      sleep(0.5)
 
       expect(find('.recent_location_activity_location')).to have_content('added')
       expect(find('.recent_location_activity_location')).to have_content('removed')
@@ -630,8 +599,6 @@ describe LocationsController do
       select('Quarterworld', from: "new_operator_#{@location.id}")
       click_on 'Save'
 
-      sleep 1
-
       expect(@location.reload.operator_id).to eq(o.id)
       expect(@location.phone).to eq(nil)
       expect(@location.website).to eq('http://www.pinballmap.com')
@@ -647,8 +614,6 @@ describe LocationsController do
       select('Bar', from: "new_location_type_#{@location.id}")
       click_on 'Save'
 
-      sleep 1
-
       expect(@location.reload.location_type_id).to eq(t.id)
       expect(@location.phone).to eq('503-488-1938')
       expect(@location.website).to eq('http://www.pinballmap.com')
@@ -662,8 +627,6 @@ describe LocationsController do
       fill_in("new_phone_#{@location.id}", with: 'THIS IS SPAM')
       click_on 'Save'
 
-      sleep 1
-
       expect(@location.reload.phone).to eq(nil)
 
       visit '/portland/?by_location_id=' + @location.id.to_s
@@ -672,8 +635,6 @@ describe LocationsController do
       fill_in("new_phone_#{@location.id}", with: '')
       fill_in("new_website_#{@location.id}", with: 'THIS IS SPAM')
       click_on 'Save'
-
-      sleep 1
 
       expect(@location.reload.website).to eq(nil)
     end
@@ -690,8 +651,6 @@ describe LocationsController do
       select('Bar', from: "new_location_type_#{@location.id}")
       select('Quarterworld', from: "new_operator_#{@location.id}")
       click_on 'Save'
-
-      sleep 1
 
       expect(@location.reload.website).to eq('http://www.foo.com')
       expect(@location.phone).to eq('503-285-3928')
@@ -711,16 +670,12 @@ describe LocationsController do
       fill_in("new_website_#{@location.id}", with: 'http://www.foo.com')
       click_on 'Save'
 
-      sleep 1
-
       expect(Location.find(@location.id).website).to eq('http://www.foo.com')
       expect(page).to_not have_css('div#flash_error')
 
       find('.meta_image').click
       fill_in("new_website_#{@location.id}", with: 'http://www.bar.com')
       click_on 'Save'
-
-      sleep 1
 
       expect(Location.find(@location.id).website).to eq('http://www.bar.com')
       expect(page).to_not have_css('div#flash_error')
@@ -733,8 +688,6 @@ describe LocationsController do
       fill_in("new_desc_#{@location.id}", with: 'http://hopethisdoesntwork.com foo bar baz')
       click_on 'Save'
 
-      sleep 1
-
       expect(@location.reload.description).to eq(nil)
     end
 
@@ -745,8 +698,6 @@ describe LocationsController do
       fill_in("new_desc_#{@location.id}", with: 'https://hopethisdoesntwork.com foo bar baz')
       click_on 'Save'
 
-      sleep 1
-
       expect(@location.reload.description).to eq(nil)
     end
 
@@ -756,8 +707,6 @@ describe LocationsController do
       find("#location_detail_location_#{@location.id} .meta_image").click
       fill_in("new_desc_#{@location.id}", with: 'COOL DESC')
       click_on 'Save'
-
-      sleep 1
 
       expect(Location.find(@location.id).description).to eq('COOL DESC')
       expect(Location.find(@location.id).date_last_updated.strftime('%b %d, %Y')).to eq(Time.now.strftime('%b %d, %Y'))
@@ -773,15 +722,11 @@ describe LocationsController do
       fill_in("new_desc_#{@location.id}", with: 'COOL DESC')
       click_on 'Save'
 
-      sleep 1
-
       expect(Location.find(@location.id).description).to eq('COOL DESC')
 
       find("#location_detail_location_#{@location.id} .meta_image").click
       fill_in("new_desc_#{@location.id}", with: 'COOLER DESC')
       click_on 'Save'
-
-      sleep 1
 
       expect(Location.find(@location.id).description).to eq('COOLER DESC')
     end
@@ -793,8 +738,6 @@ describe LocationsController do
       fill_in("new_desc_#{@location.id}", with: 'COOL DESC')
       click_on 'Save'
 
-      sleep 1
-
       expect(@location.reload.description).to eq('COOL DESC')
     end
 
@@ -805,8 +748,6 @@ describe LocationsController do
       fill_in("new_desc_#{@location.id}", with: nil)
       click_on 'Save'
 
-      sleep 1
-
       expect(@location.reload.description).to eq(nil)
     end
 
@@ -816,8 +757,6 @@ describe LocationsController do
       find("#location_detail_location_#{@location.id} .meta_image").click
       fill_in("new_desc_#{@location.id}", with: 'coooool')
       click_on 'Save'
-
-      sleep 1
 
       expect(@location.reload.description).to eq('coooool')
       expect(@location.date_last_updated).to eq(Date.today)
@@ -833,8 +772,6 @@ HERE
       find("#location_detail_location_#{@location.id} .meta_image").click
       fill_in("new_desc_#{@location.id}", with: string_that_is_too_large)
       click_on 'Save'
-
-      sleep 1
 
       expect(@location.reload.description).to eq('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur porta dui vel eleifend. Maecenas pulvinar varius euismod. Curabitur luctus diam quis pulvinar facilisis. Suspendisse eu felis sit amet eros cursus aliquam. Proin sit amet posuere. Lorem ipsum dolor sit amet, consect')
     end

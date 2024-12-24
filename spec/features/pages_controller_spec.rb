@@ -12,8 +12,6 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
@@ -61,8 +59,6 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(page.body).to have_content('Rip City')
       expect(page.body).to_not have_content('No Way')
 
@@ -75,8 +71,6 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(page.body).to have_content('No Way')
       expect(page.body).to_not have_content('Rip City')
 
@@ -85,8 +79,6 @@ describe PagesController do
       fill_in('address', with: '97203')
 
       click_on 'location_search_button'
-
-      sleep 1
 
       expect(page.body).to have_content('Rip City')
       expect(page.body).to have_content('No Way')
@@ -116,8 +108,6 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(page).to have_content('Cleo')
       expect(page).to_not have_content('Bawb')
       expect(page).to have_content('Sass')
@@ -130,8 +120,6 @@ describe PagesController do
       select('10+', from: 'by_at_least_n_machines')
 
       click_on 'location_search_button'
-
-      sleep 1
 
       expect(page).to_not have_content('Cleo')
       expect(page).to_not have_content('Bawb')
@@ -152,8 +140,6 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(page).to_not have_content('Cleo')
       expect(page).to_not have_content('Bawb')
       expect(page).to have_content('Sass')
@@ -168,8 +154,6 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
 
@@ -177,16 +161,12 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
 
       visit '/map?by_at_least_n_machines=5'
 
       click_on 'location_search_button'
-
-      sleep 1
 
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
@@ -227,7 +207,6 @@ describe PagesController do
       FactoryBot.create(:user_fave_location, location: FactoryBot.create(:location, name: 'Baz'))
 
       visit '/saved'
-      sleep 1
 
       expect(page.body).to have_content('Foo')
       expect(page.body).to have_content('Bar')
@@ -242,8 +221,6 @@ describe PagesController do
       fill_in('address', with: '97203')
 
       click_on 'location_search_button'
-
-      sleep 1
 
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to_not have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
@@ -261,8 +238,6 @@ describe PagesController do
       find(:xpath, '//div[text()="Rip City Retail (Portland, OR)"]').click
 
       click_on 'location_search_button'
-
-      sleep 1
 
       expect(find('#search_results')).to have_content('Rip City Retail')
       expect(find('#search_results')).to_not have_content('Rip City Retail SW')
@@ -285,8 +260,6 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(find('#search_results')).to have_content('Renee')
       expect(find('#search_results')).to_not have_content('Clark')
       expect(find('#search_results')).to_not have_content('Rip City')
@@ -295,8 +268,6 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      sleep 1
-
       expect(find('#search_results')).to_not have_content('Rip City')
       expect(find('#search_results')).to have_content('Clark')
       expect(find('#search_results')).to_not have_content('Renee')
@@ -304,8 +275,6 @@ describe PagesController do
       fill_in('by_machine_name', with: 'Sass')
 
       click_on 'location_search_button'
-
-      sleep 1
 
       expect(find('#search_results')).to have_content('Rip City')
       expect(find('#search_results')).to_not have_content('Clark')

@@ -8,9 +8,8 @@ describe LocationMachineXrefsController do
 
   describe 'add machines - not authed', type: :feature, js: true do
     it 'Should not allow you to add machines if you are not logged in' do
-      sleep 1
+
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
-      sleep 1
 
       expect(page).to_not have_selector("#add_machine_location_banner_#{@location.reload.id}")
     end
@@ -32,13 +31,10 @@ describe LocationMachineXrefsController do
         login(@user)
 
         visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
-        sleep 1
 
         find("#add_machine_location_banner_#{location.id}").click
         select(@machine_to_add.name, from: 'add_machine_by_id_11')
         click_on 'add'
-
-        sleep 1
 
         expect(location.machines.size).to eq(1)
         expect(location.machines.first).to eq(@machine_to_add)
@@ -64,8 +60,6 @@ describe LocationMachineXrefsController do
       fill_in('add_machine_by_name_1', with: @machine_to_add.name)
       click_on 'add'
 
-      sleep 1
-
       expect(@location.machines.size).to eq(1)
       expect(@location.machines.first).to eq(@machine_to_add)
 
@@ -76,8 +70,6 @@ describe LocationMachineXrefsController do
       find("#add_machine_location_banner_#{@location.id}").click
       fill_in('add_machine_by_name_1', with: @machine_to_add.name.downcase)
       click_on 'add'
-
-      sleep 1
 
       expect(@location.machines.size).to eq(1)
       expect(@location.machines.first).to eq(@machine_to_add)
@@ -93,8 +85,6 @@ describe LocationMachineXrefsController do
       page.accept_alert 'Please choose a machine from the list. If the machine is not in the list, it is likely a game (e.g., a non-pinball game) that we do not include on Pinball Map. If you think the list is missing a pinball machine, please contact us.' do
         click_on 'add'
       end
-
-      sleep 1
 
       expect(@location.machines.size).to eq(0)
 
@@ -156,8 +146,6 @@ describe LocationMachineXrefsController do
     it 'does not let you edit machine descriptions' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      sleep 1
-
       expect(page).to_not have_selector('span.condition_button.condition_button_new')
       expect(page).to_not have_css('comment_image')
     end
@@ -182,8 +170,6 @@ describe LocationMachineXrefsController do
       page.accept_confirm do
         click_button 'delete'
       end
-
-      sleep 1
 
       @lmx.reload
       expect(@lmx.machine_conditions.size).to eq(0)
@@ -211,8 +197,6 @@ describe LocationMachineXrefsController do
         click_button 'Update Comment'
       end
 
-      sleep 1
-
       @lmx.reload
       expect(@lmx.machine_conditions.first.comment).to eq('bad')
     end
@@ -234,8 +218,6 @@ describe LocationMachineXrefsController do
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM <a href')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
-      sleep 1
-
       @lmx.reload
       expect(@lmx.machine_conditions.size).to eq(0)
     end
@@ -252,8 +234,6 @@ describe LocationMachineXrefsController do
       page.find("div#machine_condition_lmx_#{lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{lmx.id}", with: 'THIS IS NOT SPAM')
       page.find("input#save_machine_condition_#{lmx.id}").click
-
-      sleep 1
 
       expect(lmx.reload.machine_conditions.first.comment).to eq('THIS IS NOT SPAM')
 
@@ -272,8 +252,6 @@ describe LocationMachineXrefsController do
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}.save_button").click
-
-      sleep 1
 
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("This is a new condition\nssw\n#{@lmx.created_at.strftime('%b %d, %Y')}")
       expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
@@ -325,8 +303,6 @@ describe LocationMachineXrefsController do
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
-      sleep 1
-
       expect(page).to_not have_content('Condition 3 words.')
     end
 
@@ -361,7 +337,6 @@ describe LocationMachineXrefsController do
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#cancel_machine_condition_#{@lmx.id}").click
 
-      sleep 1
     end
   end
 
@@ -453,8 +428,6 @@ describe LocationMachineXrefsController do
 
       find('.ic_button').click
 
-      sleep 0.5
-
       expect(page).to have_css('.ic_yes')
 
       user_submission = UserSubmission.last
@@ -472,8 +445,6 @@ describe LocationMachineXrefsController do
 
       find('.ic_unknown').click
       find('.ic_yes').click
-
-      sleep 1
 
       expect(page).to have_css('.ic_no')
     end
@@ -495,8 +466,6 @@ describe LocationMachineXrefsController do
 
       find("#add_machine_location_banner_#{@location.id}").click
 
-      sleep(1)
-
       fill_in('add_machine_by_name_1', with: 'sassy')
 
       page.execute_script %{ $('#add_machine_by_name_1').trigger('focus') }
@@ -508,8 +477,6 @@ describe LocationMachineXrefsController do
       find(:xpath, '//div[contains(text(), "Sassy Madness (Bally, 2010)")]').click
 
       click_on 'add'
-
-      sleep(1)
 
       expect(@location.reload.machines.map { |m| m.name + '-' + m.year.to_s + '-' + m.manufacturer.to_s }.sort).to eq(['Sassy Madness-2010-Bally', 'Test Machine Name-2010-Williams'])
     end
@@ -525,8 +492,6 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       find("#add_machine_location_banner_#{@location.id}").click
-
-      sleep(1)
 
       fill_in('add_machine_by_name_1', with: 'sassy')
 
@@ -904,8 +869,6 @@ describe LocationMachineXrefsController do
 
       visit "/#{@region.name}?by_location_id=#{l.reload.id}"
 
-      sleep(1)
-
       expect(page).to have_content('Cleo')
       expect(page).to have_link('Quarter Bean')
       expect(page).to have_content('(This operator does not receive machine comments)')
@@ -913,8 +876,6 @@ describe LocationMachineXrefsController do
       l = FactoryBot.create(:location, id: 44, region: @region, name: 'Sass', operator: FactoryBot.create(:operator, name: 'Sass Bean', region: @region, website: nil))
 
       visit "/#{@region.name}?by_location_id=#{l.reload.id}"
-
-      sleep(1)
 
       expect(page).to have_content('Sass')
       expect(page).to have_content('Sass Bean')
@@ -981,8 +942,6 @@ describe LocationMachineXrefsController do
       visit "/#{@region.name}"
       page.find('input#location_search_button').click
 
-      sleep(1)
-
       actual_order = page.all('div.search_result').map(&:text)
       expect(actual_order[0]).to match(/Bawb/)
       expect(actual_order[1]).to match(/Cleo/)
@@ -1028,7 +987,6 @@ describe LocationMachineXrefsController do
         location = FactoryBot.create(:location, id: 111, region: region)
 
         visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
-        sleep(1)
 
         within('div.search_result') do
           expect(page).to have_content('Test Location Name')
@@ -1041,7 +999,6 @@ describe LocationMachineXrefsController do
       FactoryBot.create(:location, id: 53, region: @region, name: 'Bawb', city: 'Portland')
 
       visit "/#{@region.name}/?by_city_id=Beaverton"
-      sleep(1)
 
       within('div.search_result') do
         expect(page).to have_content('Cleo')
