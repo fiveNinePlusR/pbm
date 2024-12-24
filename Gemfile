@@ -46,6 +46,7 @@ gem 'webrick'
 
 group :test do
   gem 'capybara'
+  gem 'capybara-lockstep'
   gem 'capybara-screenshot'
   gem 'factory_bot_rails'
   gem 'launchy'
