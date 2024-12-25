@@ -161,14 +161,14 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      expect(page.body).to have_content('0 Locations & 0 machines in results')
+      expect(page).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
 
       visit '/map?by_at_least_n_machines=5'
 
       click_on 'location_search_button'
 
-      expect(page.body).to have_content('0 Locations & 0 machines in results')
+      expect(page).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
 
@@ -194,8 +194,8 @@ describe PagesController do
       page.execute_script %{ $('#by_machine_name').trigger('keydown') }
       find(:xpath, '//div[contains(text(), "Dude")]').click
 
-      expect(page.body).to have_content('Exact machine version?')
-      expect(page.body).to have_css('#singleVersion', visible: true)
+      expect(page).to have_content('Exact machine version?')
+      expect(page).to have_css('#singleVersion', visible: true)
     end
 
     it 'respects user_faved filter' do
@@ -208,9 +208,9 @@ describe PagesController do
 
       visit '/saved'
 
-      expect(page.body).to have_content('Foo')
-      expect(page.body).to have_content('Bar')
-      expect(page.body).to_not have_content('Baz')
+      expect(page).to have_content('Foo')
+      expect(page).to have_content('Bar')
+      expect(page).to_not have_content('Baz')
     end
 
     it 'lets you search by address -- displays 0 results instead of saying "Not Found"' do
@@ -222,7 +222,7 @@ describe PagesController do
 
       click_on 'location_search_button'
 
-      expect(page.body).to have_content('0 Locations & 0 machines in results')
+      expect(page).to have_content('0 Locations & 0 machines in results')
       expect(page).to_not have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
     end
 
