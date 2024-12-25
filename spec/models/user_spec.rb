@@ -129,9 +129,10 @@ describe User do
         FactoryBot.create(:user_submission, user: @user, location: location, submission_type: UserSubmission::LOCATION_METADATA_TYPE, location_name: location.name, location_id: location.id, created_at: '2017-01-01')
       end
 
-      expect(@user.profile_list_of_edited_locations.length).to eq(50)
-      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[0]).to eq('Location 0')
-      expect(@user.profile_list_of_edited_locations.map { |s| s[1] }[49]).to eq('Location 49')
+      edited = @user.profile_list_of_edited_locations.map { |s| s[1] }
+      expect(edited.length).to eq(50)
+      expect(edited.first).to eq('Location 0')
+      expect(edited.last).to eq('Location 49')
     end
 
     it 'should not return locations that no longer exist' do
