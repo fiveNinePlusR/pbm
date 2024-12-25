@@ -86,6 +86,9 @@ describe LocationMachineXrefsController do
         click_on 'add'
       end
 
+      # FIXME remove sleep for the alert dialog popups
+      sleep 1
+
       expect(@location.machines.size).to eq(0)
 
       expect(find("#show_machines_location_#{@location.id}")).to_not have_content('New Machine Name')
@@ -171,6 +174,9 @@ describe LocationMachineXrefsController do
         click_button 'delete'
       end
 
+      # FIXME remove sleep for the confirmation dialog popups
+      sleep 1
+
       @lmx.reload
       expect(@lmx.machine_conditions.size).to eq(0)
     end
@@ -196,6 +202,9 @@ describe LocationMachineXrefsController do
       page.accept_confirm do
         click_button 'Update Comment'
       end
+
+      # FIXME remove sleep for the confirmation dialog popups
+      sleep 1
 
       @lmx.reload
       expect(@lmx.machine_conditions.first.comment).to eq('bad')
