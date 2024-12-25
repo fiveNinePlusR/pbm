@@ -29,6 +29,10 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Install imagemagick's dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install imagemagick
       - name: Generate binstubs
         run: bundle binstubs rspec-core
       # Add or replace database setup steps here
