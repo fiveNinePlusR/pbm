@@ -55,7 +55,7 @@ describe LocationsController do
           find("#confirm_location_button_#{location.id}.confirm_button").click
         end
 
-        # FIXME remove sleep for the alert dialog popups
+        # FIXME: remove sleep for the alert dialog popups
         sleep 1
 
         expect(location.reload.date_last_updated).to eq(Date.today)
@@ -142,7 +142,7 @@ describe LocationsController do
           click_button 'Remove'
         end
 
-        # FIXME remove sleep for the confirmation dialog popups
+        # FIXME: remove sleep for the confirmation dialog popups
         sleep 1
 
         expect(LocationMachineXref.all).to eq([])

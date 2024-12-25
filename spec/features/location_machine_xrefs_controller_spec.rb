@@ -8,7 +8,6 @@ describe LocationMachineXrefsController do
 
   describe 'add machines - not authed', type: :feature, js: true do
     it 'Should not allow you to add machines if you are not logged in' do
-
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
 
       expect(page).to_not have_selector("#add_machine_location_banner_#{@location.reload.id}")
@@ -86,7 +85,7 @@ describe LocationMachineXrefsController do
         click_on 'add'
       end
 
-      # FIXME remove sleep for the alert dialog popups
+      # FIXME: remove sleep for the alert dialog popups
       sleep 1
 
       expect(@location.machines.size).to eq(0)
@@ -174,7 +173,7 @@ describe LocationMachineXrefsController do
         click_button 'delete'
       end
 
-      # FIXME remove sleep for the confirmation dialog popups
+      # FIXME: remove sleep for the confirmation dialog popups
       sleep 1
 
       @lmx.reload
@@ -203,7 +202,7 @@ describe LocationMachineXrefsController do
         click_button 'Update Comment'
       end
 
-      # FIXME remove sleep for the confirmation dialog popups
+      # FIXME: remove sleep for the confirmation dialog popups
       sleep 1
 
       @lmx.reload
@@ -345,7 +344,6 @@ describe LocationMachineXrefsController do
       page.find("div#machine_condition_lmx_#{@lmx.id}.machine_condition_lmx .add_condition").click
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#cancel_machine_condition_#{@lmx.id}").click
-
     end
   end
 
