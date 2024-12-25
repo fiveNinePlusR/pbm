@@ -35,7 +35,9 @@ RSpec.configure do |config|
   end
 
   Capybara.register_driver :selenium_chrome do |app|
-    options = Selenium::WebDriver::Chrome::Options.new
+    options = Selenium::WebDriver::Chrome::Options.new(
+      unhandled_prompt_behavior: 'ignore'
+    )
     unless ENV.fetch('NO_HEADLESS_CHROME', false)
       options.add_argument('--headless')
       options.add_argument('--window-size=2000,1000')

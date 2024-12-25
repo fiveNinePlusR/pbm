@@ -16,6 +16,7 @@
     - if Rails.env.staging?
       %meta{content: "noindex,nofollow", name: "robots"}/
 
+    = capybara_lockstep if defined?(Capybara::Lockstep)
     = stylesheet_link_tag 'normalize', 'https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css', 'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css', 'application', 'mediaqueries', :media => ""
     - if mobile_device?
       = stylesheet_link_tag 'mobile-application'
@@ -25,7 +26,6 @@
       = javascript_include_tag 'lightbox.min', 'https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js', 'https://unpkg.com/pmtiles@3.2.0/dist/pmtiles.js', 'map_style', 'map_style_dark'
     - if ((defined? @region) and current_page?(suggest_path)) || current_page?(map_location_suggest_path)
       = javascript_include_tag 'https://maps.googleapis.com/maps/api/js?libraries=places&key=' + ENV['GOOGLE_MAPS_API_KEY'].to_s
-    = capybara_lockstep if defined?(Capybara::Lockstep)
 
     = csrf_meta_tag
     = render 'application/favicon'
