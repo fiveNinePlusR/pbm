@@ -6,16 +6,18 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'factory_bot_rails'
 require 'rspec/rails'
 require 'capybara/rspec'
-require 'simplecov'
-require 'simplecov-cobertura'
 require 'rspec/retry'
 require 'selenium/webdriver'
 
 include Sprockets::Rails::Helper
 include ActiveSupport::Testing::TimeHelpers
 
-SimpleCov.start
-SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+if ENV['TEST_COVERAGE']
+  require 'simplecov'
+  require 'simplecov-cobertura'
+  SimpleCov.start
+  SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+end
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
