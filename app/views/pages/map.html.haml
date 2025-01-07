@@ -127,6 +127,7 @@
   clearButton.addEventListener("click", clearMachine);
   clearButton2.addEventListener("click", clearLocation);
   clearButton3.addEventListener("click", clear);
+  var savedLocations = "";
 
   $(function () {
     $('#by_location_name').bind('input', function(event, ui) {
@@ -222,6 +223,23 @@
       $('#by_city_name').val(city);
       $('#by_state_name').val(state);
     });
+
+    // show a list of recent user actions
+    $('#mapActivities_wrapper').bind('click', function(event, ui) {
+      savedLocations = $('#locations').html;
+
+      $('#locations').html(loadingHTML());
+      let coords = map.getCenter();
+      let lat = coords.lat;
+      let lng = coords.lng;
+
+      $.get(`/user_submissions/list_within_range?lat=${lat};lng=${lng}`, function(data, textStatus, jqxhr) {
+        $('#locations').html(data);
+      });
+
+      return false;
+   });
+
   });
 
   $('#address_search_form').on('submit', function(e) {
@@ -242,7 +260,7 @@
 
     numMachinesVal = ';by_at_least_n_machines=' + $('#by_at_least_n_machines').val();
     locationTypeVal = ';by_type_id=' + $('#by_type_id').val();
-    
+
     hideSearchModal();
     $(".mask").hide();
     mapAdjusted = 0;

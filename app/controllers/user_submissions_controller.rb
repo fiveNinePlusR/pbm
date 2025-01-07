@@ -11,6 +11,22 @@ class UserSubmissionsController < InheritedResources::Base
     end
   end
 
+  def list_within_range
+
+    if params[:submission_type]
+      user_submissions = UserSubmission.where.not(lat: nil)
+                                       .where(created_at: min_date_of_submission..Date.today.end_of_day, submission_type: params[:submission_type])
+                                       .near([params[:lat], params[:lon]], max_distance, order: false)
+    else
+      user_submissions = UserSubmission.where.not(lat: nil)
+                                       .where(created_at: min_date_of_submission..Date.today.end_of_day)
+                                       .near([params[:lat], params[:lon]], max_distance, order: false)
+    end
+
+    sorted_submissions = user_submissions.order('created_at DESC')
+    render partial: "locations/recent_activity", locals: { sorted_submissions: sorted_submissions }
+  end
+
   private
 
   def user_submission_params

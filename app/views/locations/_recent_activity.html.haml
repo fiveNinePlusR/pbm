@@ -7,3 +7,128 @@
       $('#recent_location_activity_location_#{location.id}').load('/locations/#{location.id}/render_recent_activity');
     });
   });
+- if (@recent_activity_list)
+  :javascript
+
+    clearMarkers();
+    clearInfoWindows();
+    $("#mapFollow_wrapper,#search_link_wrapper,#min_lookup_wrapper,#mapActivities_wrapper").removeClass("hide_button");
+
+   //showLocations(
+   //  [#{@location_data[0].join(', ')}],
+   //  [#{@location_data[1].join(', ')}],
+   //  [#{@location_data[2].join(', ')}],
+   //  [#{@location_data[3].join(', ').html_safe}],
+   //  [#{@location_data[4].join(', ')}],
+   //  [#{[@lat, @lon].join(', ')}]
+   //);
+
+   //var hrefOrig = '#{request.scheme}://#{request.host_with_port}/#{@region ? @region.name.downcase : @operators_map ? @operators_map : "map"}?';
+   //var def_value = window.location.href;
+
+   //var url = '';
+   //if (typeof(search_string) == "undefined") {
+   //  url = def_value;
+   //  document.getElementById("search_link").href=url;
+   //} else {
+   //  url = hrefOrig + search_string;
+   //  document.getElementById("search_link").href=url;
+   //}
+
+   //if (history.pushState) {
+   //  var a = document.createElement('a');
+   //  a.href = url;
+
+   //  window.history.pushState('', '', a.pathname + a.search);
+   //}
+
+:javascript
+  var isSingleLocation = #{@locations.size == 1 ? true : false};
+
+  if (isSingleLocation) {
+    var locationName = "#{raw @locations.size == 0 ? '' : @locations[0].name}";
+    var locationAddress = "#{raw @locations.size == 0 ? '' : @locations[0].full_street_address}";
+    var regionName = "#{raw @locations.size == 0 ? '' : @locations[0].region ? @locations[0].region.full_name : ''}";
+    var machineCount = "#{raw @locations.size == 0 ? '' : @locations[0].machines.count}";
+    var machineNames = "#{raw @locations.size == 0 ? '' : @locations[0].machine_names[0,3].join(', ')}";
+    var machineSingle = "#{raw @locations.size == 0 ? '' : @locations[0].machines.count > 1 ? 'pinball machines' : 'pinball machine'}";
+    var machineMoreThree = "#{raw @locations.size == 0 ? '' : @locations[0].machines.count > 3 ? ' and more!' : '.'}";
+
+    newTitle = locationName + " - " + regionName + " Pinball Map";
+    newDesc = locationName + " on Pinball Map! " + locationAddress + ". " + locationName + " has " + machineCount + " " + machineSingle + ": " + machineNames + machineMoreThree;
+
+    document.title = newTitle;
+    $('meta[property="og:title"]').attr("content", newTitle);
+    $('meta[name="description"]').attr("content", newDesc);
+    $('meta[property="og:description"]').attr("content", newDesc);
+  } else {
+    document.title = "#{title_for_path(request.path, @region)}";
+    $('meta[property="og:title"]').attr("content", "#{title_for_path(request.path, @region)}");
+    $('meta[name="description"]').attr("content", "#{desc_for_path(request.path, @region)}");
+    $('meta[property="og:description"]').attr("content", "#{desc_for_path(request.path, @region)}");
+  }
+
+  let topbutton = document.getElementById("top_button");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 40 || document.documentElement.scrollTop > 40) {
+      topbutton.style.display = "block";
+    } else {
+      topbutton.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  } 
+
+#results_container
+  #search_results
+    %div.back_to_results.font14.bold.red.pointer{:onclick => "backToResults();"}
+      %span.left_arrow &#x2190;
+      %span Go back to search results
+    - @recent_activity_list.each do |action|
+      - l = location.clone
+      %div.search_result[l]
+        %div.sub_nav_location[l, :show_location_detail]{:onclick => "showLocationDetail(#{l.id}); showInfowindow(#{l.id});"}
+          %div.name.bold.font22
+            = l.name
+          - if (l.location_type)
+            %div.location_type
+              - if (l.location_type.icon)
+                %div.location_type_container
+                  =image_tag("icons/#{l.location_type.icon}.svg", :alt => "#{l.location_type.icon}")
+              %span
+                #{l.location_type.name}
+          - if (!params[:show_location_distance].blank? && !params[:lat].blank? && !params[:lon].blank?)
+            %div.location_types= "distance: #{l.distance_from([params[:lat], params[:lon]]).round(2)} miles"
+          - if (l.state.blank?)
+            %div.address
+              %span.address_name[l, :location_summary] #{[l.street, l.city].join(', ')}
+          - else
+            %div.address
+              %span.address_name[l, :location_summary] #{[l.street, l.city, l.state].join(', ')}
+          %div.machine_names
+            - l.machines_sorted.first(5).each do |machine|
+              %div.brightpurple
+                #{machine.name}
+                %span.man_year (#{[machine.manufacturer, machine.year].reject(&:blank?).join(', ')})
+          - if (location.machines.size > 5)
+            %div.darkgrey.italic.pb_15
+              plus
+              - the_rest = (location.machines.size - 5)
+              #{the_rest}
+              more
+              - if the_rest == 1
+                machine
+              - else
+                machines
+        %div.location_detail[l, :location_detail]{:style => 'display:none;'}
+
+    #search_results_count
+      %span
+        #{@recent_activity_list.size} recent actions in this area
+      %span
+
