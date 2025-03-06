@@ -8,9 +8,9 @@ describe LocationMachineXrefsController do
 
   describe 'add machines - not authed', type: :feature, js: true do
     it 'Should not allow you to add machines if you are not logged in' do
-      sleep 1
+      
       visit "/#{@region.name}/?by_location_id=#{@location.id}"
-      sleep 1
+      
 
       expect(page).to_not have_selector("#add_machine_location_banner_#{@location.reload.id}")
     end
@@ -32,13 +32,13 @@ describe LocationMachineXrefsController do
         login(@user)
 
         visit "/#{region ? region.name : 'map'}/?by_location_id=#{location.id}"
-        sleep 1
+        
 
         find("#add_machine_location_banner_#{location.id}").click
         select(@machine_to_add.name, from: 'add_machine_by_id_11')
         click_on 'add'
 
-        sleep 1
+        
 
         expect(location.reload.machine_count).to eq(1)
         expect(location.machines.first).to eq(@machine_to_add)
@@ -64,7 +64,7 @@ describe LocationMachineXrefsController do
       fill_in('add_machine_by_name_1', with: @machine_to_add.name)
       click_on 'add'
 
-      sleep 1
+      
 
       expect(@location.reload.machine_count).to eq(1)
       expect(@location.machines.first).to eq(@machine_to_add)
@@ -77,7 +77,7 @@ describe LocationMachineXrefsController do
       fill_in('add_machine_by_name_1', with: @machine_to_add.name.downcase)
       click_on 'add'
 
-      sleep 1
+      
 
       expect(@location.machine_count).to eq(1)
       expect(@location.machines.first).to eq(@machine_to_add)
@@ -94,7 +94,7 @@ describe LocationMachineXrefsController do
         click_on 'add'
       end
 
-      sleep 1
+      
 
       expect(@location.machine_count).to eq(0)
 
@@ -156,7 +156,7 @@ describe LocationMachineXrefsController do
     it 'does not let you edit machine descriptions' do
       visit '/portland/?by_location_id=' + @location.id.to_s
 
-      sleep 1
+      
 
       expect(page).to_not have_selector('span.condition_button.condition_button_new')
       expect(page).to_not have_css('comment_image')
@@ -183,7 +183,7 @@ describe LocationMachineXrefsController do
         click_button 'delete'
       end
 
-      sleep 1
+      
 
       @lmx.reload
       expect(@lmx.machine_conditions.size).to eq(0)
@@ -211,7 +211,7 @@ describe LocationMachineXrefsController do
         click_button 'Update Comment'
       end
 
-      sleep 1
+      
 
       @lmx.reload
       expect(@lmx.machine_conditions.first.comment).to eq('bad')
@@ -234,7 +234,7 @@ describe LocationMachineXrefsController do
       fill_in("new_machine_condition_#{@lmx.id}", with: 'THIS IS SPAM <a href')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
-      sleep 1
+      
 
       @lmx.reload
       expect(@lmx.machine_conditions.size).to eq(0)
@@ -253,7 +253,7 @@ describe LocationMachineXrefsController do
       fill_in("new_machine_condition_#{lmx.id}", with: 'THIS IS NOT SPAM')
       page.find("input#save_machine_condition_#{lmx.id}").click
 
-      sleep 1
+      
 
       expect(lmx.reload.machine_conditions.first.comment).to eq('THIS IS NOT SPAM')
 
@@ -273,7 +273,7 @@ describe LocationMachineXrefsController do
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}.save_button").click
 
-      sleep 1
+      
 
       expect(find("#show_conditions_lmx_#{@lmx.id}")).to have_content("This is a new condition\nssw\n#{@lmx.created_at.strftime('%b %d, %Y')}")
       expect(@lmx.reload.location.date_last_updated).to eq(Date.today)
@@ -325,7 +325,7 @@ describe LocationMachineXrefsController do
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#save_machine_condition_#{@lmx.id}").click
 
-      sleep 1
+      
 
       expect(page).to_not have_content('Condition 3 words.')
     end
@@ -361,7 +361,7 @@ describe LocationMachineXrefsController do
       fill_in("new_machine_condition_#{@lmx.id}", with: 'This is a new condition')
       page.find("input#cancel_machine_condition_#{@lmx.id}").click
 
-      sleep 1
+      
     end
   end
 
@@ -453,7 +453,7 @@ describe LocationMachineXrefsController do
 
       find('.ic_button').click
 
-      sleep 0.5
+
 
       expect(page).to have_css('.ic_yes')
 
@@ -473,7 +473,7 @@ describe LocationMachineXrefsController do
       find('.ic_unknown').click
       find('.ic_yes').click
 
-      sleep 1
+      
 
       expect(page).to have_css('.ic_no')
     end

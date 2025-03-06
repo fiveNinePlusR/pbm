@@ -12,7 +12,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
@@ -66,7 +66,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page.body).to have_content('Rip City')
       expect(page.body).to_not have_content('No Way')
@@ -80,7 +80,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page.body).to have_content('No Way')
       expect(page.body).to_not have_content('Rip City')
@@ -91,7 +91,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page.body).to have_content('Rip City')
       expect(page.body).to have_content('No Way')
@@ -103,7 +103,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 0.5
+
 
       expect(page.body).to have_content('Far Off')
 
@@ -111,7 +111,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page.body).to have_content('Rip City')
       expect(page.body).to have_content('No Way')
@@ -141,7 +141,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page).to have_content('Cleo')
       expect(page).to_not have_content('Bawb')
@@ -156,7 +156,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page).to_not have_content('Cleo')
       expect(page).to_not have_content('Bawb')
@@ -177,7 +177,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page).to_not have_content('Cleo')
       expect(page).to_not have_content('Bawb')
@@ -193,7 +193,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
@@ -202,7 +202,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
@@ -211,7 +211,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
@@ -252,7 +252,7 @@ describe MapsController do
       FactoryBot.create(:user_fave_location, location: FactoryBot.create(:location, name: 'Baz'))
 
       visit '/saved'
-      sleep 1
+      
 
       expect(page.body).to have_content('Foo')
       expect(page.body).to have_content('Bar')
@@ -268,7 +268,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page.body).to have_content('0 Locations & 0 machines in results')
       expect(page).to_not have_content("NOT FOUND. PLEASE SEARCH AGAIN.\nUse the dropdown or the autocompleting textbox if you want results.")
@@ -287,7 +287,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(find('#search_results')).to have_content('Rip City Retail')
       expect(find('#search_results')).to_not have_content('Rip City Retail SW')
@@ -310,7 +310,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(find('#search_results')).to have_content('Renee')
       expect(find('#search_results')).to_not have_content('Clark')
@@ -320,7 +320,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(find('#search_results')).to_not have_content('Rip City')
       expect(find('#search_results')).to have_content('Clark')
@@ -330,7 +330,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(find('#search_results')).to have_content('Rip City')
       expect(find('#search_results')).to_not have_content('Clark')
@@ -350,7 +350,7 @@ describe MapsController do
 
       click_on 'location_search_button'
 
-      sleep 1
+      
 
       expect(page).to have_content('Nearby activity')
 
