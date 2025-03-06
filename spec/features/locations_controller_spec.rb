@@ -60,7 +60,8 @@ describe LocationsController do
           find("#confirm_location_button_#{location.id}.confirm_button").click
         end
 
-        
+        # FIXME remove sleep for the alert dialog popups
+        sleep 1
 
         expect(location.reload.date_last_updated).to eq(Date.today)
         expect(find("#last_updated_location_#{location.id}")).to have_content("Last updated: #{Time.now.strftime('%b %d, %Y')} by ssw")
@@ -150,7 +151,8 @@ describe LocationsController do
           click_button 'Remove'
         end
 
-        
+        # FIXME remove sleep for the confirmation dialog popups
+        sleep 1
 
         expect(LocationMachineXref.all).to eq([])
         expect(location.reload.date_last_updated).to eq(Date.today)
@@ -212,7 +214,7 @@ describe LocationsController do
         fill_in('by_location_name', with: 'Zelda')
         click_on 'location_search_button'
 
-        
+
 
         desc_tag = "meta[name=\"description\"][content=\"#{old_style_description}\"]"
         og_desc_tag = "meta[property=\"og:description\"][content=\"#{old_style_description}\"]"

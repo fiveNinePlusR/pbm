@@ -94,6 +94,12 @@ describe LocationMachineXrefsController do
         click_on 'add'
       end
 
+      # FIXME remove sleep for the alert dialog popups
+      sleep 1
+
+      # FIXME remove sleep for the alert dialog popups
+      sleep 1
+
       
 
       expect(@location.machine_count).to eq(0)
@@ -183,7 +189,8 @@ describe LocationMachineXrefsController do
         click_button 'delete'
       end
 
-      
+      # FIXME remove sleep for the confirmation dialog popups
+      sleep 1
 
       @lmx.reload
       expect(@lmx.machine_conditions.size).to eq(0)
@@ -211,7 +218,8 @@ describe LocationMachineXrefsController do
         click_button 'Update Comment'
       end
 
-      
+      # FIXME remove sleep for the confirmation dialog popups
+      sleep 1
 
       @lmx.reload
       expect(@lmx.machine_conditions.first.comment).to eq('bad')
