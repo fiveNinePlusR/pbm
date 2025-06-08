@@ -581,6 +581,7 @@ DEPENDENCIES
   launchy
   listen
   maxminddb
+  mini_portile2 (= 2.8.8)
   ostruct
   pagy
   paper_trail

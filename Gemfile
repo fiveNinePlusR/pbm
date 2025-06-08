@@ -41,6 +41,7 @@ gem "strip_attributes"
 gem "tzinfo-data"
 gem "uglifier"
 gem "webrick"
+gem "mini_portile2", "2.8.8"
 
 group :production, :development, :staging do
   gem "rails_semantic_logger"
